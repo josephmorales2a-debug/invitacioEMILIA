@@ -1,0 +1,409 @@
+/* =========================================================
+   TOKENS
+   ========================================================= */
+:root {
+  --sand: #FBF6EC;
+  --water-light: #EAF4FB;
+  --water: #BFE1F0;
+  --blue: #4A90C4;
+  --blue-deep: #1F4E79;
+  --coral: #F2A65A;
+  --seafoam: #7FD1C6;
+  --white: #FFFFFF;
+
+  --font-display: 'Baloo 2', system-ui, sans-serif;
+  --font-body: 'Quicksand', system-ui, sans-serif;
+
+  --radius-lg: 28px;
+  --radius-md: 18px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--sand);
+  font-family: var(--font-body);
+  color: var(--blue-deep);
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+button { font-family: inherit; cursor: pointer; }
+a { text-decoration: none; }
+
+/* =========================================================
+   BURBUJAS AMBIENTE (decorativas, fondo)
+   ========================================================= */
+.ambient-bubbles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.ambient-bubbles::before,
+.ambient-bubbles::after {
+  content: "";
+  position: absolute;
+  bottom: -40px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffffffcc, #bfe1f088);
+  animation: rise 9s linear infinite;
+}
+.ambient-bubbles::before { left: 20%; animation-delay: 0s; }
+.ambient-bubbles::after  { left: 70%; width: 22px; height: 22px; animation-delay: 3s; }
+
+.ambient-bubbles--main::before { left: 12%; animation-duration: 12s; }
+.ambient-bubbles--main::after  { left: 85%; animation-duration: 14s; }
+
+@keyframes rise {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translateY(-110vh) translateX(20px); opacity: 0; }
+}
+
+/* =========================================================
+   PANTALLA 1 — SOBRE
+   ========================================================= */
+#envelope-screen {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  background: linear-gradient(180deg, var(--water-light) 0%, var(--sand) 100%);
+  text-align: center;
+  padding: 24px;
+}
+
+.envelope-hint {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--blue-deep);
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  z-index: 1;
+}
+
+#envelope {
+  position: relative;
+  z-index: 1;
+  background: none;
+  border: none;
+  padding: 0;
+  width: 220px;
+  height: 150px;
+  animation: bob 3s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.envelope-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--white);
+  border: 2px solid var(--blue);
+  border-radius: var(--radius-md);
+  box-shadow: 0 18px 30px -14px rgba(31, 78, 121, 0.35);
+  overflow: visible;
+}
+
+.envelope-flap {
+  position: absolute;
+  top: -2px; left: -2px; right: -2px;
+  height: 76px;
+  background: var(--water-light);
+  border: 2px solid var(--blue);
+  border-bottom: none;
+  clip-path: polygon(0 0, 100% 0, 50% 88%);
+  transform-origin: top center;
+  transition: transform 0.6s cubic-bezier(.4,0,.2,1);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.envelope-seal {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.8rem;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+}
+
+.envelope-card {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 6px;
+  height: 0%;
+  background: var(--water-light);
+  border: 2px solid var(--water);
+  border-radius: 10px 10px 0 0;
+  transition: height 0.5s ease 0.35s, top 0.5s ease 0.35s;
+}
+
+/* Estado abierto (clase agregada por JS) */
+#envelope.open .envelope-flap {
+  transform: rotateX(180deg);
+}
+#envelope.open .envelope-seal {
+  opacity: 0;
+}
+#envelope.open .envelope-card {
+  height: 90%;
+  box-shadow: 0 -6px 14px -8px rgba(31,78,121,0.25);
+}
+
+.envelope-from {
+  font-size: 0.95rem;
+  color: var(--blue);
+  z-index: 1;
+}
+
+/* =========================================================
+   CONTENIDO PRINCIPAL
+   ========================================================= */
+#invitation {
+  position: relative;
+  background: linear-gradient(180deg, var(--water-light) 0%, var(--sand) 40%, var(--water-light) 100%);
+}
+
+.panel {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  gap: 14px;
+  z-index: 1;
+}
+
+/* Reveal on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--blue);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.big-number {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(6rem, 32vw, 9rem);
+  line-height: 0.9;
+  color: var(--blue);
+  text-shadow: 0 6px 0 var(--water);
+}
+
+.reef {
+  font-size: 1.6rem;
+  letter-spacing: 0.3em;
+}
+
+.name-ribbon {
+  position: relative;
+  width: min(300px, 80vw);
+  margin-top: 8px;
+}
+.ribbon-svg { width: 100%; display: block; }
+.ribbon-text {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -55%);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--blue-deep);
+}
+
+.scroll-cue {
+  margin-top: 30px;
+  font-size: 0.85rem;
+  color: var(--blue);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* --- Audio / mensaje --- */
+.audio-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  background: var(--blue);
+  color: var(--white);
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 20px -8px rgba(74,144,196,0.6);
+  transition: transform 0.2s ease;
+}
+.audio-btn:active { transform: scale(0.94); }
+.audio-btn[aria-pressed="true"] .audio-icon::before { content: "❚❚"; }
+.audio-icon::before { content: "▶"; }
+.audio-icon { visibility: hidden; }
+.audio-icon::before { visibility: visible; }
+
+.audio-caption {
+  font-size: 0.8rem;
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.message-box {
+  max-width: 340px;
+  background: var(--water-light);
+  border: 2px dashed var(--blue);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.creature {
+  font-size: 2.2rem;
+  filter: drop-shadow(0 6px 8px rgba(31,78,121,0.15));
+}
+.creature-left, .creature-right { position: absolute; top: 18%; }
+.creature-left { left: 8%; }
+.creature-right { right: 8%; }
+.creature-top { position: relative; margin-bottom: 4px; }
+
+/* --- Countdown --- */
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--blue-deep);
+  margin-top: 12px;
+}
+
+.event-date {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+.date-box {
+  background: var(--white);
+  border: 2px solid var(--water);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--blue-deep);
+}
+.date-box--accent {
+  background: var(--blue);
+  color: var(--white);
+  font-size: 1.6rem;
+  border-color: var(--blue);
+}
+.event-time { color: var(--blue); font-weight: 600; }
+
+.octopus { font-size: 3rem; margin: 6px 0; }
+
+.countdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+.countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  min-width: 56px;
+  box-shadow: 0 8px 18px -12px rgba(31,78,121,0.4);
+}
+.countdown-unit span {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--blue);
+}
+.countdown-unit small {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--blue-deep);
+  opacity: 0.7;
+}
+.countdown-sep {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--blue);
+  padding-bottom: 14px;
+}
+
+/* --- Ubicación / RSVP --- */
+.address-text { font-size: 1.05rem; line-height: 1.5; }
+
+.cta-btn {
+  display: inline-block;
+  background: var(--blue);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 999px;
+  box-shadow: 0 10px 20px -10px rgba(74,144,196,0.7);
+  transition: transform 0.2s ease;
+}
+.cta-btn:active { transform: scale(0.96); }
+
+.cta-whatsapp {
+  background: var(--seafoam);
+  color: var(--blue-deep);
+  margin-top: 4px;
+}
+
+.envelope-mini { font-size: 2rem; }
+
+.rsvp-text { max-width: 320px; line-height: 1.5; }
+
+.footer-note {
+  margin-top: 24px;
+  font-size: 0.8rem;
+  color: var(--blue);
+  opacity: 0.7;
+}

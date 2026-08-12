@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>¡Mi primer añito! 🐬</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== -->
+<!-- PANTALLA 1: EL SOBRE -->
+<!-- ===================== -->
+<section id="envelope-screen">
+  <div class="ambient-bubbles" aria-hidden="true"></div>
+  <p class="envelope-hint">Tocá el sobre para abrir tu invitación</p>
+
+  <button id="envelope" aria-label="Abrir invitación">
+    <div class="envelope-body">
+      <div class="envelope-flap"></div>
+      <div class="envelope-seal">💌</div>
+      <div class="envelope-card"></div>
+    </div>
+  </button>
+
+  <p class="envelope-from">Para: <span id="guest-name">Vos</span> 💙</p>
+</section>
+
+<!-- ===================== -->
+<!-- CONTENIDO PRINCIPAL   -->
+<!-- (oculto hasta abrir)  -->
+<!-- ===================== -->
+<main id="invitation" hidden>
+
+  <!-- Fondo animado de burbujas, continuo en todo el scroll -->
+  <div class="ambient-bubbles ambient-bubbles--main" aria-hidden="true"></div>
+
+  <!-- HERO: nombre + edad -->
+  <section class="panel hero-panel reveal">
+    <p class="eyebrow">Mis primer añito</p>
+    <div class="big-number">1</div>
+    <div class="reef" aria-hidden="true">🪸⭐️🐚</div>
+    <div class="name-ribbon">
+      <svg viewBox="0 0 300 70" class="ribbon-svg" aria-hidden="true">
+        <path d="M0 10 L300 10 L280 35 L300 60 L0 60 L20 35 Z" fill="#eaf4fb" stroke="#4a90c4" stroke-width="2"/>
+      </svg>
+      <span class="ribbon-text">Bianca</span>
+    </div>
+    <p class="scroll-cue">desliza hacia abajo ↓</p>
+  </section>
+
+  <!-- AUDIO + MENSAJE DE BIENVENIDA -->
+  <section class="panel message-panel reveal">
+    <button id="audio-btn" class="audio-btn" aria-pressed="false">
+      <span class="audio-icon">▶</span>
+    </button>
+    <p class="audio-caption">clic para escuchar</p>
+
+    <div class="creature creature-left">🐠</div>
+
+    <div class="message-box">
+      <p>El mar guarda grandes tesoros, y para nosotros el más valioso cumple 1 añito.
+      ¡Te esperamos para compartir esta celebración tan especial! 💙</p>
+    </div>
+
+    <div class="creature creature-right">🐙</div>
+
+    <!-- Reemplazá src por tu propio audio -->
+    <audio id="bg-audio" loop preload="none">
+      <source src="audio/musica.mp3" type="audio/mpeg">
+    </audio>
+  </section>
+
+  <!-- CUENTA REGRESIVA -->
+  <section class="panel countdown-panel reveal">
+    <div class="creature creature-top">🐬</div>
+    <p class="section-title">El gran día será el</p>
+    <div class="event-date">
+      <div class="date-box">
+        <span class="date-box-value" id="event-weekday">viernes</span>
+      </div>
+      <div class="date-box date-box--accent">
+        <span class="date-box-value" id="event-day">27</span>
+      </div>
+      <div class="date-box">
+        <span class="date-box-value" id="event-month">noviembre</span>
+      </div>
+    </div>
+    <p class="event-time">19 a 22 hs.</p>
+
+    <div class="octopus" aria-hidden="true">🐙</div>
+
+    <p class="section-title">¿Cuánto falta?</p>
+    <div class="countdown" id="countdown">
+      <div class="countdown-unit"><span id="cd-days">00</span><small>días</small></div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit"><span id="cd-hours">00</span><small>hs</small></div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit"><span id="cd-minutes">00</span><small>min</small></div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit"><span id="cd-seconds">00</span><small>seg</small></div>
+    </div>
+  </section>
+
+  <!-- DIRECCIÓN -->
+  <section class="panel location-panel reveal">
+    <div class="creature creature-right">🐡</div>
+    <p class="section-title">Dirección</p>
+    <p class="address-text">
+      salon municipal<br>
+     Puerta del señor
+    </p>
+    <a class="cta-btn" id="map-link"
+       href="https://www.bing.com/maps/search?name=Sal%C3%B3n+Comunal%2C+Puerta+Del+Se%C3%B1or&trfc=&mepi=0%7E%7EEmbedded%7ELargeMapLink&FORM=MPSRPL&style=r&q=Sal%C3%B3n+Comunal%2C+Puerta+Del+Se%C3%B1or&ss=id.ypid%3AYN343F079918BD19EE&ppois=14.476456642150879_-90.4538345336914_Sal%C3%B3n+Comunal%2C+Puerta+Del+Se%C3%B1or&cp=14.476926%7E-90.454282&lvl=15.3"
+       target="_blank" rel="noopener">
+      Ver ubicación
+    </a>
+  </section>
+
+  <!-- CONFIRMACIÓN -->
+  <section class="panel rsvp-panel reveal">
+    <div class="creature creature-left">🐋</div>
+    <div class="envelope-mini">💌</div>
+    <p class="section-title">Confirmación</p>
+    <p class="rsvp-text">¡Nos encantaría que formes parte de este momento tan especial!</p>
+
+    <a class="cta-btn cta-whatsapp" id="rsvp-mama"
+       href="https://wa.me/50241872636?text=%C2%A1Hola!%20Confirmo%20mi%20asistencia%20al%20cumple%20de%20bianca%C3%A1n%20%F0%9F%92%99"
+       target="_blank" rel="noopener">
+      Confirmar con mamá
+    </a>
+    <a class="cta-btn cta-whatsapp" id="rsvp-papa"
+       href="https://wa.me/50251920830?text=%C2%A1Hola!%20Confirmo%20mi%20asistencia%20al%20cumple%20de%20bianca%C3%A1n%20%F0%9F%92%99"
+       target="_blank" rel="noopener">
+      Confirmar con papá
+    </a>
+
+    <p class="footer-note"> Hecho con 💙 para bianca (J)</p>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
